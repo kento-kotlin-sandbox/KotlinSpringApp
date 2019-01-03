@@ -39,9 +39,14 @@ repositories {
 	mavenCentral()
 }
 
+def version = [
+		jquery: '1.11.3',
+        bootstrap: '3.3.7-1'
+]
+
 // コメントアウトされているものは後で使う
 dependencies {
-//	implementation('org.springframework.boot:spring-boot-starter-aop')
+	implementation('org.springframework.boot:spring-boot-starter-aop')
 	implementation('org.springframework.boot:spring-boot-starter-jdbc')
 //	implementation('org.springframework.boot:spring-boot-starter-security')
 	implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
@@ -51,6 +56,11 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	runtimeOnly('org.springframework.boot:spring-boot-devtools')
 	runtimeOnly('com.h2database:h2')
-//	testImplementation('org.springframework.boot:spring-boot-starter-test')
-//	testImplementation('org.springframework.security:spring-security-test')
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('org.springframework.security:spring-security-test')
+	// webjars
+    // BootStrap と Jquery を追加
+	compile("org.webjars:jquery:${version.jquery}")
+	compile("org.webjars:bootstrap:${version.bootstrap}")
 }
+
