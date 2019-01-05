@@ -1,8 +1,15 @@
-package com.example.demo.com.example.demo.login.controller
+package com.example.demo.login.controller
+
+import com.example.demo.login.domain.model.SignupForm
+
+import java.util.LinkedHashMap
 
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PostMapping
 
 
@@ -25,7 +32,7 @@ class SignupController {
 
     // ユーザー登録画面のGET用コントローラー
     @GetMapping("/signup")
-    fun getSignUp(model: Model): String {
+    fun getSignUp(@ModelAttribute form: SignupForm, model: Model): String {
 
         // ラジオボタンの初期化メソッド呼び出し
         radioMarriage = initRadioMarriage()
@@ -39,9 +46,14 @@ class SignupController {
 
     // ユーザー登録画面のPOST用コントローラー
     @PostMapping("/signup")
-    fun postSignUp(model: Model): String {
+    fun postSignUp(@ModelAttribute @Validated form: SignupForm, bindingResult: BindingResult, model: Model): String {
+
+        // 入力チェックに引っかかった場合、ユーザー登録画面に戻る
+        if(bindingResult.hasErrors()) {
+            return getSignUp(form, model)
+        }
 
         // login.htmlにリダイレクト
-        return "redirect/login"
+        return "redirect:/login"
     }
 }
