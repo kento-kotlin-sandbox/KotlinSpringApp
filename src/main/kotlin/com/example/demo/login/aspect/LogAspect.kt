@@ -1,9 +1,10 @@
 package com.example.demo.login.aspect
 
-import org.aspectj.lang.JoinPoint
+import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.After
 import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Before
+import org.aspectj.lang.annotation.Around
 import org.springframework.stereotype.Component
 
 
@@ -11,13 +12,22 @@ import org.springframework.stereotype.Component
 @Component
 class LogAspect {
 
-    @Before("execution(* *..*.*Controller.*(..))")
-    fun startLog(jp: JoinPoint) {
+    @Throws(Exception::class)
+    @Around("execution(* *..*.*Controller.*(..))")
+    fun startLog(jp: ProceedingJoinPoint): Any {
         System.out.println("メソッド開始：" + jp.getSignature())
-    }
 
-    @After("execution(* *..*.*Controller.*(..))")
-    fun endLog(jp: JoinPoint) {
-        System.out.println("メソッド終了：" + jp.getSignature())
+        try {
+            val result = jp.proceed()
+
+            System.out.println("メソッド終了：" + jp.getSignature())
+
+            return result
+
+        } catch(e: Exception) {
+            System.out.println("メソッド異常終了：" + jp.getSignature())
+            e.printStackTrace()
+            throw e
+        }
     }
 }
