@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping
 class SignupController {
 
     // ラジオボタンの実装
-    lateinit var radioMarriage: Map<String, String>
+    internal var radioMarriage: Map<String, String>? = null
 
     // ラジオボタンの初期化メソッド
     private fun initRadioMarriage(): Map<String, String> {

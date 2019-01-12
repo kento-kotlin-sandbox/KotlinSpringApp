@@ -14,9 +14,10 @@ import org.springframework.web.bind.annotation.PostMapping
 class HomeController {
 
     @Autowired
-    lateinit var userService: UserService
+    internal var userService: UserService? = null
 
     // ユーザー一覧画面のGET用メソッド
+    @GetMapping("/home")
     fun getHome(model: Model): String {
         // コンテンツ部分にユーザー一覧を表示するための文字列を登録
         model.addAttribute("contents", "login/home::home_contents")
