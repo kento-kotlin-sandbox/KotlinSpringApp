@@ -1,6 +1,5 @@
 package com.example.demo.login.domain.repository
 
-import java.util.List
 import org.springframework.dao.DataAccessException
 import com.example.demo.login.domain.model.User
 
@@ -19,7 +18,7 @@ interface UserDao {
     fun selectOne(userId: String): User?
 
     @Throws(DataAccessException::class)
-    fun selectMany(): List<User>?
+    fun selectMany(): MutableList<User>?
 
     @Throws(DataAccessException::class)
     fun updateOne(user: User): Int

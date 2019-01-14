@@ -6,23 +6,23 @@ import java.util.Date
 class User {
 
     // ユーザーID
-    private var userId: String? = null
+    var userId: String? = null
 
     // パスワード
-    private var password: String? = null
+    var password: String? = null
 
     // ユーザー名
-    private var userName: String? = null
+    var userName: String? = null
 
     // 誕生日
-    private var birthday: Date? = null
+    var birthday: Date? = null
 
     // 年齢
-    private var age: Int = 0
+    var age: Int = 0
 
     // 結婚ステータス
-    private var marriage: Boolean = false
+    var marriage: Boolean = false
 
     // ロール
-    private var role: String? = null
+    var role: String? = null
 }

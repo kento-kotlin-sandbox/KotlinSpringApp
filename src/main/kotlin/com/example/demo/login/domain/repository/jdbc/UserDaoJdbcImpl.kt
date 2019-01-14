@@ -1,6 +1,5 @@
 package com.example.demo.login.domain.repository.jdbc
 
-import java.util.List
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.dao.DataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
@@ -26,7 +25,26 @@ class UserDaoJdbcImpl: UserDao {
     // Userテーブルにデータを１件insert
     @Throws(DataAccessException::class)
     override fun insertOne(user: User): Int {
-        return 0
+
+        // 1件登録
+        val rowNumber: Int = jdbc!!.update("INSERT INTO m_user(user_id,"
+                            + "password,"
+                            + "user_name,"
+                            + "birthday,"
+                            + "age,"
+                            + "marriage,"
+                            + "role)"
+                            + " VALUES(?,?,?,?,?,?,?)"
+                            , user.userId
+                            , user.password
+                            , user.userName
+                            , user.birthday
+                            , user.age
+                            , user.marriage
+                            , user.role
+        )
+
+        return rowNumber
     }
 
     // Userテーブルのデータを1件取得
@@ -37,7 +55,7 @@ class UserDaoJdbcImpl: UserDao {
 
     // Userテーブルの全データを取得
     @Throws(DataAccessException::class)
-    override fun selectMany(): List<User>? {
+    override fun selectMany(): MutableList<User>? {
         return null
     }
 
