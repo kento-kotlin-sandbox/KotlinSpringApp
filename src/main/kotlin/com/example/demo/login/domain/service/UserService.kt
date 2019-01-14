@@ -41,4 +41,20 @@ class UserService {
     fun selectOne(userId: String): User {
         return dao!!.selectOne(userId)!!
     }
+
+    // 1件更新メソッド
+    fun updateOne(user: User): Boolean {
+
+        // 1件更新
+        val rowNumber: Int = dao!!.updateOne(user)
+
+        var result = false
+
+        if(rowNumber > 0) {
+            // update成功
+            result = true
+        }
+
+        return result
+    }
 }

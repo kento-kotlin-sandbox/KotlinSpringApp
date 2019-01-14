@@ -121,7 +121,17 @@ class UserDaoJdbcImpl: UserDao {
     // Userテーブルを1件更新
     @Throws(DataAccessException::class)
     override fun updateOne(user: User): Int {
-        return 0
+
+        // 1件更新
+        val rowNumber: Int = jdbc!!.update("UPDATE M_USER SET password = ?, user_name = ?, birthday = ?, age = ?, marriage = ? WHERE user_id = ?",
+                        user.password,
+                        user.userName,
+                        user.birthday,
+                        user.age,
+                        user.marriage,
+                        user.userId)
+
+        return rowNumber
     }
 
     // Userテーブルを1件削除

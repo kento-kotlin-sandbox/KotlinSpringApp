@@ -113,6 +113,35 @@ class HomeController {
         return "login/homeLayout"
     }
 
+    // ユーザー更新用処理
+    @PostMapping(value="/userDetail", params=["update"])
+    fun postUserDetailUpdate(@ModelAttribute form: SignupForm, model: Model): String {
+        System.out.println("更新ボタンの処理")
+
+        // Userインスタンスの生成
+        val user: User = User()
+
+        // フォームクラスをUserクラスに変換
+        user.userId = form.userId
+        user.password = form.password
+        user.userName = form.userName
+        user.birthday = form.birthday
+        user.age = form.age
+        user.marriage = form.marriage as Boolean
+
+        // 更新実行
+        val result: Boolean = userService!!.updateOne(user)
+
+        if(result) {
+            model.addAttribute("result", "更新成功")
+        } else {
+            model.addAttribute("result", "更新失敗")
+        }
+
+        // ユーザー一覧画面を表示
+        return getUserList(model)
+    }
+
     // ユーザー一覧のCSV出力用メソッド
     fun getUserListCsv(model: Model): String {
         // TODO:
