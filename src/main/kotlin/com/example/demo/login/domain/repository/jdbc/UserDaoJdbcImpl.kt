@@ -7,7 +7,8 @@ import org.springframework.stereotype.Repository
 
 import com.example.demo.login.domain.model.User
 import com.example.demo.login.domain.repository.UserDao
-
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 @Repository
@@ -19,7 +20,11 @@ class UserDaoJdbcImpl: UserDao {
     // Userテーブルの件数を取得
     @Throws(DataAccessException::class)
     override fun count(): Int {
-        return 0
+
+        // 全件取得してカウントする
+        val count: Int = jdbc!!.queryForObject("SELECT COUNT(*) FROM m_user", Int::class.java)!!
+
+        return count
     }
 
     // Userテーブルにデータを１件insert
@@ -56,7 +61,38 @@ class UserDaoJdbcImpl: UserDao {
     // Userテーブルの全データを取得
     @Throws(DataAccessException::class)
     override fun selectMany(): MutableList<User>? {
-        return null
+
+        // m_userテーブルのデータを全件取得
+        val getList: MutableList<MutableMap<String, Any>> = jdbc!!.queryForList("SELECT * FROM m_user")
+
+        val userList: MutableList<User> = ArrayList()
+
+        for(map in getList) {
+
+            // Userインスタンス生成
+            val user: User = User()
+
+            // Userインスタンスに取得したデータをセットする
+            // ユーザーID
+            user.userId = map["user_id"] as String?
+            // パスワード
+            user.password = map["password"] as String?
+            // ユーザー名
+            user.userName = map["user_name"] as String?
+            // 誕生日
+            user.birthday = map["birthday"] as Date?
+            // 年齢
+            user.age = map["age"] as Int
+            // 結婚ステータス
+            user.marriage = map["marriage"] as Boolean
+            // ロール
+            user.role = map["role"] as String?
+
+            // 結果返却用のListに追加
+            userList.add(user)
+        }
+
+        return userList
     }
 
     // Userテーブルを1件更新

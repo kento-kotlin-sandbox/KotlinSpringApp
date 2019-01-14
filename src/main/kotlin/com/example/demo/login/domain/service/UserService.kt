@@ -26,4 +26,14 @@ class UserService {
 
         return result
     }
+
+    // カウント用メソッド
+    fun count(): Int {
+        return dao!!.count()
+    }
+
+    // 全件取得用メソッド
+    fun selectMany(): MutableList<User> {
+        return dao!!.selectMany()!!
+    }
 }

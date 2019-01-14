@@ -16,9 +16,9 @@ class HelloService {
         val map: Map<String, Any> = helloRepository.findOne(id)
 
         // Mapから値を取得
-        val employeeId: Int = map.get("employee_id").toString().toInt()
-        val employeeName: String = map.get("employee_name").toString()
-        val age: Int = map.get("age").toString().toInt()
+        val employeeId: Int = map.get("employee_id") as Int
+        val employeeName: String = map.get("employee_name") as String
+        val age: Int = map.get("age") as Int
 
         // Employeeクラスに値をセット
         val employee: Employee = Employee(employeeId, employeeName, age)

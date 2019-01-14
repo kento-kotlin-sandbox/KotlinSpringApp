@@ -30,8 +30,8 @@ class SignupController {
         val radio: MutableMap<String, String> = LinkedHashMap()
 
         // 既婚、未婚をMapに格納
-        radio.put("既婚", "true")
-        radio.put("未婚", "false")
+        radio["既婚"] = "true"
+        radio["未婚"] = "false"
 
         return radio
     }
@@ -88,7 +88,7 @@ class SignupController {
         val result: Boolean = userService?.insert(user!!)!!
 
         // ユーザー登録結果の判定
-        if(result == true) {
+        if(result) {
             System.out.println("insert成功")
         } else {
             System.out.println("insert失敗")
