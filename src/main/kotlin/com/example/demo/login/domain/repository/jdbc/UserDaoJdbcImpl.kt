@@ -55,7 +55,30 @@ class UserDaoJdbcImpl: UserDao {
     // Userテーブルのデータを1件取得
     @Throws(DataAccessException::class)
     override fun selectOne(userId: String): User? {
-        return null
+
+        // 1件取得
+        val map: Map<String, Any?> = jdbc!!.queryForMap("SELECT * FROM m_user WHERE user_id = ?", userId)
+
+        // 結果返却用の変数
+        val user = User()
+
+        // 取得したデータを結果返却用の変数にセット
+        // ユーザーID
+        user.userId = map["user_id"] as String
+        // パスワード
+        user.password = map["password"] as String
+        // ユーザー名
+        user.userName = map["user_name"] as String
+        // 誕生日
+        user.birthday = map["birthday"] as Date
+        // 年齢
+        user.age = map["age"] as Int
+        // 結婚ステータス
+        user.marriage = map["marriage"] as Boolean
+        // ロール
+        user.role = map["role"] as String
+
+        return user
     }
 
     // Userテーブルの全データを取得

@@ -36,4 +36,9 @@ class UserService {
     fun selectMany(): MutableList<User> {
         return dao!!.selectMany()!!
     }
+
+    // 1件取得用メソッド
+    fun selectOne(userId: String): User {
+        return dao!!.selectOne(userId)!!
+    }
 }

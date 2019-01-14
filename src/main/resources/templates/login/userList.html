@@ -3,7 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
   <meta charset="UTF-8"></meta>
-  <title>Title</title>
 </head>
 <body>
   <div th:fragment="userList_contents">
@@ -31,7 +30,7 @@
         <!-- 結婚ステータス -->
         <td th:text="${user.marriage} ? '既婚' : '未婚' "></td>
         <td>
-          <a class="btn btn-primary" th:href="@{'/userDetail/${user.userId}'}">詳細</a>
+          <a class="btn btn-primary" th:href="@{'/userDetail/' + ${user.userId}}">詳細</a>
         </td>
       </tr>
     </table>

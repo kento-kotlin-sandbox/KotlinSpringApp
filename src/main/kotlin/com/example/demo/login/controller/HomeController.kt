@@ -1,20 +1,39 @@
 package com.example.demo.login.controller
 
+import com.example.demo.login.domain.model.SignupForm
 import com.example.demo.login.domain.model.User
+import com.example.demo.login.domain.service.UserService
+
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.GetMapping
-
-import com.example.demo.login.domain.service.UserService
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 
+import java.util.LinkedHashMap
 
 @Controller
 class HomeController {
 
     @Autowired
     internal var userService: UserService? = null
+
+    // 結婚ステータスのラジオボタン用変数
+    internal var radioMarriage: Map<String, String>? = null
+
+    // ラジオボタンの初期化メソッド
+    internal fun initRadioMarriage(): Map<String, String> {
+        val radio: MutableMap<String, String> = LinkedHashMap()
+
+        // 既婚、未婚をMapに格納
+        radio["既婚"] = "true"
+        radio["未婚"] = "false"
+
+        return radio
+    }
+
 
     // ユーザー一覧画面のGET用メソッド
     @GetMapping("/home")
@@ -50,6 +69,46 @@ class HomeController {
         val count: Int = userService!!.count()
 
         model.addAttribute("userListCount", count)
+
+        return "login/homeLayout"
+    }
+
+    // ユーザー詳細画面のGET用メソッド
+    @GetMapping("/userDetail/{id:.+}")
+    fun getUserDetail(@ModelAttribute form: SignupForm, model: Model, @PathVariable("id") userId: String): String {
+
+        // DEBUG:ユーザーID確認
+        System.out.println("userId = " + userId)
+
+        // コンテンツ部分にユーザー詳細を表示するための文字列を登録
+        model.addAttribute("contents", "login/userDetail::userDetail_contents")
+
+        // 結婚ステータス用ラジオボタンの初期化
+        this.radioMarriage = initRadioMarriage()
+
+        // ラジオボタン用のMapをModelに登録
+        model.addAttribute("radioMarriage", radioMarriage)
+
+        // ユーザーIDのチェック
+        if(userId.length > 0) {
+            // ユーザー情報を取得
+            val user: User = userService!!.selectOne(userId)
+
+            // Userクラスをフォームクラスに変換
+            // ユーザーID
+            form.userId = user.userId
+            // ユーザー名
+            form.userName = user.userName
+            // 誕生日
+            form.birthday = user.birthday
+            // 年齢
+            form.age = user.age
+            // 結婚ステータス
+            form.marriage = user.marriage
+
+            // Modelに登録
+            model.addAttribute("signupForm", form)
+        }
 
         return "login/homeLayout"
     }
