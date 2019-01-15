@@ -36,7 +36,7 @@ public class HelloController {
 
         // ほんとはエラーハンドリングが必要だけど割愛
         // StringからInt型へ変換
-        val id: Int = str.toInt()
+        val id: Int = str as Int
 
         // 1件検索
         val employee: Employee = helloService.findOne(id)
