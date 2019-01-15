@@ -57,4 +57,21 @@ class UserService {
 
         return result
     }
+
+    // 1件削除メソッド
+    fun deleteOne(userId: String): Boolean {
+
+        // 1件削除
+        val rowNomber: Int = dao!!.deleteOne(userId)
+
+        // 判定用変数
+        var result: Boolean = false
+
+        if(rowNomber > 0) {
+            // delete成功
+            result = true
+        }
+
+        return result
+    }
 }

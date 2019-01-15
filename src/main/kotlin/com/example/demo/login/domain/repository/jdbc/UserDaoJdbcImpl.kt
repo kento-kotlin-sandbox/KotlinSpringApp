@@ -137,7 +137,11 @@ class UserDaoJdbcImpl: UserDao {
     // Userテーブルを1件削除
     @Throws(DataAccessException::class)
     override fun deleteOne(userId: String): Int {
-        return 0
+
+        // 1件削除
+        val rowNumber: Int = jdbc!!.update("DELETE FROM m_user WHERE user_id = ?", userId)
+
+        return rowNumber
     }
 
     // Userテーブルの全データをCSVに出力
