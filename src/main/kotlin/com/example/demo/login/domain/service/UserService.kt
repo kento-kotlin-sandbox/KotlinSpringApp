@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import com.example.demo.login.domain.model.User
 import com.example.demo.login.domain.repository.UserDao
+import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.transaction.annotation.Transactional
 
 
+@Transactional
 @Service
 class UserService {
 
     @Autowired
+    @Qualifier("UserDaoJdbcImpl")
     internal var dao: UserDao? = null
 
     // insert用メソッド

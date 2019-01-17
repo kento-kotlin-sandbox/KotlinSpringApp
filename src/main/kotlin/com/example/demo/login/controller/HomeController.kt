@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.dao.DataAccessException
 
 import java.util.LinkedHashMap
 
@@ -129,13 +130,17 @@ class HomeController {
         user.age = form.age
         user.marriage = form.marriage as Boolean
 
-        // 更新実行
-        val result: Boolean = userService!!.updateOne(user)
+        try {
+            // 更新実行
+            val result: Boolean = userService!!.updateOne(user)
 
-        if(result) {
-            model.addAttribute("result", "更新成功")
-        } else {
-            model.addAttribute("result", "更新失敗")
+            if (result) {
+                model.addAttribute("result", "更新成功")
+            } else {
+                model.addAttribute("result", "更新失敗")
+            }
+        } catch (e: DataAccessException) {
+            model.addAttribute("result", "更新失敗（トランザクション）")
         }
 
         // ユーザー一覧画面を表示
