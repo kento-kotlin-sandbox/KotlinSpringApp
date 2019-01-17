@@ -15,10 +15,10 @@ interface UserDao {
     fun insertOne(user: User): Int
 
     @Throws(DataAccessException::class)
-    fun selectOne(userId: String): User?
+    fun selectOne(userId: String): User
 
     @Throws(DataAccessException::class)
-    fun selectMany(): MutableList<User>?
+    fun selectMany(): MutableList<User>
 
     @Throws(DataAccessException::class)
     fun updateOne(user: User): Int

@@ -54,7 +54,7 @@ class UserDaoJdbcImpl: UserDao {
 
     // Userテーブルのデータを1件取得
     @Throws(DataAccessException::class)
-    override fun selectOne(userId: String): User? {
+    override fun selectOne(userId: String): User {
 
         // 1件取得
         val map: Map<String, Any?> = jdbc!!.queryForMap("SELECT * FROM m_user WHERE user_id = ?", userId)
@@ -83,12 +83,12 @@ class UserDaoJdbcImpl: UserDao {
 
     // Userテーブルの全データを取得
     @Throws(DataAccessException::class)
-    override fun selectMany(): MutableList<User>? {
+    override fun selectMany(): MutableList<User> {
 
         // m_userテーブルのデータを全件取得
         val getList: MutableList<MutableMap<String, Any>> = jdbc!!.queryForList("SELECT * FROM m_user")
 
-        val userList: MutableList<User> = ArrayList()
+        val userList: MutableList<User> = ArrayList<User>()
 
         for(map in getList) {
 
