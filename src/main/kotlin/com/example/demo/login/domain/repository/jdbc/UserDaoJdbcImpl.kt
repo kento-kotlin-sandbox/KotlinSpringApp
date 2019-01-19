@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-@Repository
+@Repository("UserDaoJdbcImpl")
 class UserDaoJdbcImpl: UserDao {
 
     @Autowired
