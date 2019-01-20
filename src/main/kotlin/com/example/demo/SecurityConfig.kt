@@ -59,6 +59,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .antMatchers("/css/**").permitAll()      // cssへのアクセス許可
                 .antMatchers("/login").permitAll()       // ログイン画面へのアクセス許可
                 .antMatchers("/signup").permitAll()      // ユーザー登録画面へのアクセス許可
+                .antMatchers("/admin").hasAuthority("ROLE_ADMIN")  // 管理者以外は管理者画面を見れない設定
                 .anyRequest().authenticated()                        // それ以外は直リンク禁止
 
         // ログイン処理
