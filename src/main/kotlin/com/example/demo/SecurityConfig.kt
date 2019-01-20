@@ -26,6 +26,15 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .antMatchers("/signup").permitAll()      // ユーザー登録画面へのアクセス許可
                 .anyRequest().authenticated()                        // それ以外は直リンク禁止
 
+        // ログイン処理
+        http.formLogin()
+                .loginProcessingUrl("/login")      // ログイン処理のパス
+                .loginPage("/login")                      // ログイン画面の指定
+                .failureUrl("/login")           // ログイン失敗時の遷移先
+                .usernameParameter("userId")       // ログイン画面のユーザーID
+                .passwordParameter("password")     // ログイン画面のパスワード
+                .defaultSuccessUrl("/home", true)   // ログイン成功後の遷移先
+
         // CSRF対策を無効に設定（後で消す）
         http.csrf().disable()
     }
