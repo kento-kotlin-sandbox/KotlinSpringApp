@@ -77,7 +77,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .logoutSuccessUrl("/login")
 
         // CSRF対策を無効に設定（後で消す）
-        http.csrf().disable()
+        //http.csrf().disable()
     }
 
     @Throws(Exception::class)
