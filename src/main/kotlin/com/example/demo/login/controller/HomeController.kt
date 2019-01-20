@@ -165,6 +165,16 @@ class HomeController {
         return getUserList(model)
     }
 
+    // 管理者権限専用画面のGET用メソッド
+    @GetMapping("/admin")
+    fun getAdmin(model: Model): String {
+        // コンテンツ部分にユーザー詳細を表示するための文字列を登録
+        model.addAttribute("contents", "login/admin::admin_contents")
+
+        // レイアウト用テンプレート
+        return "login/homeLayout"
+    }
+
     // ユーザー一覧のCSV出力用メソッド
     fun getUserListCsv(model: Model): String {
         // TODO:
