@@ -1,18 +1,27 @@
 package com.example.demo
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import javax.sql.DataSource
 
 
 @EnableWebSecurity
 @Configuration
 class SecurityConfig: WebSecurityConfigurerAdapter() {
+
+    // パスワードエンコーダ
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
 
     @Autowired
     internal var dataSource: DataSource? = null
@@ -71,5 +80,6 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
                 .dataSource(dataSource)
                 .usersByUsernameQuery(USER_SQL)
                 .authoritiesByUsernameQuery(ROLE_SQL)
+                .passwordEncoder(passwordEncoder())  // パスワードの複合化 これがないと Spring boot2 からは動作しない
     }
 }

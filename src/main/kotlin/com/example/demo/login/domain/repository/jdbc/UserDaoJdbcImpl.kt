@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 
 import com.example.demo.login.domain.model.User
 import com.example.demo.login.domain.repository.UserDao
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,6 +17,9 @@ class UserDaoJdbcImpl: UserDao {
 
     @Autowired
     internal var jdbc: JdbcTemplate? = null
+
+    @Autowired
+    internal var passwordEncoder: PasswordEncoder? = null
 
     // Userテーブルの件数を取得
     @Throws(DataAccessException::class)
@@ -31,6 +35,9 @@ class UserDaoJdbcImpl: UserDao {
     @Throws(DataAccessException::class)
     override fun insertOne(user: User): Int {
 
+        // パスワード暗号化
+        val password: String = passwordEncoder!!.encode(user.password)
+
         // 1件登録
         val rowNumber: Int = jdbc!!.update("INSERT INTO m_user(user_id,"
                             + "password,"
@@ -41,7 +48,7 @@ class UserDaoJdbcImpl: UserDao {
                             + "role)"
                             + " VALUES(?,?,?,?,?,?,?)"
                             , user.userId
-                            , user.password
+                            , password
                             , user.userName
                             , user.birthday
                             , user.age
@@ -122,9 +129,12 @@ class UserDaoJdbcImpl: UserDao {
     @Throws(DataAccessException::class)
     override fun updateOne(user: User): Int {
 
+        // パスワード暗号化
+        val password: String = passwordEncoder!!.encode(user.password)
+
         // 1件更新
         val rowNumber: Int = jdbc!!.update("UPDATE M_USER SET password = ?, user_name = ?, birthday = ?, age = ?, marriage = ? WHERE user_id = ?",
-                        user.password,
+                        password,
                         user.userName,
                         user.birthday,
                         user.age,
