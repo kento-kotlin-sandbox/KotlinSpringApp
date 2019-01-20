@@ -1,15 +1,40 @@
 package com.example.demo
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import javax.sql.DataSource
 
 
 @EnableWebSecurity
 @Configuration
 class SecurityConfig: WebSecurityConfigurerAdapter() {
+
+    @Autowired
+    internal var dataSource: DataSource? = null
+
+    // ユーザーIDとパスワード取得用SQL
+    companion object {
+        private const val USER_SQL = "SELECT" +
+                " user_id," +
+                " password," +
+                " true" +
+                " FROM" +
+                " m_user" +
+                "  WHERE" +
+                " user_id = ?"
+        private const val ROLE_SQL = "SELECT" +
+                " user_id," +
+                " role" +
+                " FROM" +
+                " m_user" +
+                " WHERE" +
+                " user_id = ?"
+    }
 
     @Throws(Exception::class)
     override fun configure(web: WebSecurity) {
@@ -17,7 +42,7 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
         web.ignoring().antMatchers("/webjars/**", "/css/**")
     }
 
-    override fun configure(http: HttpSecurity) {
+    protected override fun configure(http: HttpSecurity) {
         // ログイン不要ページの設定
         http.authorizeRequests()
                 .antMatchers("/webjars/**").permitAll()  // webjarsへのアクセス許可
@@ -37,5 +62,14 @@ class SecurityConfig: WebSecurityConfigurerAdapter() {
 
         // CSRF対策を無効に設定（後で消す）
         http.csrf().disable()
+    }
+
+    @Throws(Exception::class)
+    protected override fun configure(auth: AuthenticationManagerBuilder) {
+        // ログイン処理時のユーザー情報を、DBから取得
+        auth.jdbcAuthentication()
+                .dataSource(dataSource)
+                .usersByUsernameQuery(USER_SQL)
+                .authoritiesByUsernameQuery(ROLE_SQL)
     }
 }
